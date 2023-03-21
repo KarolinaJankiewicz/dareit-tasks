@@ -1,0 +1,8 @@
+|id |lastname  |firstname|email             |city      |age|
+|---|----------|---------|------------------|----------|---|
+|1  |Kasia     |Nowak    |knowak@gmail.com  |London    |23 |
+|2  |Marcin    |Kowalski |mk@gmail.com      |Dublin    |26 |
+|3  |Ania      |Wozniak  |awk@gmail.com     |Paris     |29 |
+|4  |Marek     |Kowalski |maka@gmail.com    |New Castle|18 |
+|5  |Bartek    |Sujewski |basu@gmail.com    |London    |21 |
+|0  |Jankiewicz|Karolina |k_jankiewicz@wp.pl|Warsaw    |36 |
