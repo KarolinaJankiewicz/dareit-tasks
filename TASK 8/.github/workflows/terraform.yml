@@ -3,7 +3,8 @@ name: 'Terraform CI'
 on:
   pull_request:
     branches:
-    - main
+    - main,
+    - develop
 
 
 jobs:
@@ -47,4 +48,5 @@ jobs:
       run: terraform apply -auto-approve
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.TF_GOOGLE_CREDENTIALS }}
+
         
