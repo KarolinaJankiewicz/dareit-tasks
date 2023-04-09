@@ -22,10 +22,3 @@ resource "google_compute_instance" "dareit-vm-ci" {
     }
   }
 }
-
-resource "google_storage_bucket" "kosiaszka-dareit" {
-  name          = "kosiaszka-dareit"
-  location      = "us-central1"
-  storage_class = "STANDARD"
-}
-
