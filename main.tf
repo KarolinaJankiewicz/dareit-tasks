@@ -73,3 +73,7 @@ metadata_startup_script = <<-SCRIPT
   systemctl restart apache2
 SCRIPT
 }
+
+output "wordpress-instance-ip" {
+  value = google_compute_instance.wordpress-instance.network_interface[0].access_config[0].nat_ip
+}
