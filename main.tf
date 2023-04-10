@@ -72,4 +72,4 @@ metadata_startup_script = <<-SCRIPT
   ?>" > /var/www/html/wp-config.php
   systemctl restart apache2
 SCRIPT
-
+}
