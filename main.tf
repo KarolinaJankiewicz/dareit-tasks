@@ -56,21 +56,20 @@ resource "google_compute_instance" "wordpress-instance" {
     }
   }
 
-  metadata_startup_script = <<-SCRIPT
-    #!/bin/bash
-    apt-get update
-    apt-get install -y apache2 php mysql-client
-
-    wget https://wordpress.org/latest.tar.gz
-    tar -xzvf latest.tar.gz
-
-    mv wordpress/* /var/www/html/
-    chown -R www-data:www-data /var/www/html/
-    chmod -R 755 /var/www/html/
-
-    echo "<?php
-    define('DB_NAME', '${google_sql_database.wordpress-db.name}');
-    define('DB_USER', '${google_sql_user.wordpress-db-user.name}');
-    define('DB_PASSWORD', '${google_sql_user_instance.wordpress-db-user-instance.password}');
-
+metadata_startup_script = <<-SCRIPT
+  #!/bin/bash
+  apt-get update
+  apt-get install -y apache2 php mysql-client
+  wget https://wordpress.org/latest.tar.gz
+  tar -xzvf latest.tar.gz
+  mv wordpress/* /var/www/html/
+  chown -R www-data:www-data /var/www/html/
+  chmod -R 755 /var/www/html/
+  echo "<?php
+  define('DB_NAME', '${google_sql_database.wordpress-db.karolina}');
+  define('DB_USER', '${google_sql_user.wordpress-db-user.karolina}');
+  define('DB_PASSWORD', '${google_sql_user_instance.wordpress-db-user-instance.karolina}');
+  ?>" > /var/www/html/wp-config.php
+  systemctl restart apache2
+SCRIPT
 
