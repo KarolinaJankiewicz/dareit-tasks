@@ -1,16 +1,50 @@
-resource "google_compute_instance" "dareit-vm-ci-1" {
-  name         = "dareit-vm-tf-ci-1"
-  machine_type = "e2-medium"
-  zone         = "us-central1-a"
+resource "google_sql_database_instance" "wordpress-db" {
+  name             = "wordpress-db"
+  database_version = "MYSQL_5_7"
+  region           = "us-central1"
 
-  tags = ["dareit"]
+  settings {
+    tier = "db-f1-micro"
+
+    backup_configuration {
+      enabled = true
+    }
+  }
+
+  deletion_protection = true
+}
+
+resource "google_sql_database" "wordpress-db" {
+  name     = "wordpress"
+  instance = google_sql_database_instance.wordpress-db.karolina
+  charset  = "utf8"
+}
+
+resource "google_sql_user" "wordpress-db-user" {
+  name     = "wordpress-db-user"
+  instance = google_sql_database_instance.wordpress-db.karolina
+  password = "PASSWORD"
+}
+
+resource "google_sql_user_instance" "wordpress-db-user-instance" {
+  name    = google_sql_database_instance.wordpress-db.karolina
+  user    = google_sql_user.wordpress-db-user.karolina
+  host    = "77.255.160.111"
+  password = "karolina"
+  depends_on = [
+    google_sql_database_instance.wordpress-db,
+    google_sql_user.wordpress-db-user,
+  ]
+}
+
+resource "google_compute_instance" "wordpress-instance" {
+  name         = "wordpress-instance"
+  machine_type = "e2-small"
+  zone         = "us-central1-c"
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
-      labels = {
-        managed_by_terraform = "true"
-      }
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
     }
   }
 
@@ -21,11 +55,22 @@ resource "google_compute_instance" "dareit-vm-ci-1" {
       // Ephemeral public IP
     }
   }
-}
 
-resource "google_storage_bucket" "kosiaszka-dareit" {
-  name          = "kosiaszka-dareit"
-  location      = "us-central1"
-  storage_class = "STANDARD"
-}
+  metadata_startup_script = <<-SCRIPT
+    #!/bin/bash
+    apt-get update
+    apt-get install -y apache2 php mysql-client
+
+    wget https://wordpress.org/latest.tar.gz
+    tar -xzvf latest.tar.gz
+
+    mv wordpress/* /var/www/html/
+    chown -R www-data:www-data /var/www/html/
+    chmod -R 755 /var/www/html/
+
+    echo "<?php
+    define('DB_NAME', '${google_sql_database.wordpress-db.name}');
+    define('DB_USER', '${google_sql_user.wordpress-db-user.name}');
+    define('DB_PASSWORD', '${google_sql_user_instance.wordpress-db-user-instance.password}');
+
 
