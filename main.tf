@@ -16,3 +16,4 @@ resource "google_compute_instance" "wordpress-instance" {
       // Ephemeral public IP
     }
   }
+}
