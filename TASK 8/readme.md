@@ -1,5 +1,7 @@
 Readme about 8 excercise.
 
+link to my website http://34.69.126.112/, and second one where I had issue http://35.202.234.173/ (apache is working but wordpress not so I propose work aroung which is first link)
+
 I didn't clear the repository because I didn't want to lose the previous knowledge. it was a mistake that cost me a lot of work and mistakes and it could be a reason why I didn't have apropriate amount of time in this task in quality what I expected.
 
 How to instal wordpress ater built the infrastructure using terraform.
